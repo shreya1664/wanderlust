@@ -1,0 +1,48 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<div class="row">
+    <div class="col-8 offset-2">
+        <br>
+    <h3>edit your listing</h3>
+   <br>
+    
+    <form action="/listings/<%= editThis._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="form-label">Title</label>
+        <input type="text" value="<%=  editThis.title %> " name="list[title]" type="text" class="form-control">
+        </div>
+         <div class="mb-3">
+             <label for="form-label">description</label>
+         <textarea name="list[description]" class="form-control"><%=editThis.description %> </textarea>
+         </div>
+           <div class="mb-3">
+            Original image <br>
+             <img src="<%=originalImageUrl%>" alt="">
+          </div>
+          <div class="mb-3">
+             <label for="form-label">upload new image</label>
+          <input  value="<%=editThis.image%>" name="image" type="file" class="form-control">
+          </div>
+
+          <div class="row ">
+           <div class="mb-3 col-md-4">
+             <label for="form-label">price</label>
+           <input type="text" value="<%=editThis.price%>" name="list[price]" type="text" class="form-control">
+           </div>
+            <div class="mb-3 col-md-8">
+                 <label for="form-label">country</label>
+            <input type="text" value="<%=editThis.country%>" name="list[country]" type="text" class="form-control">
+            </div>
+            </div>
+
+             <div class="mb-3">
+                 <label for="form-label">location</label>
+           <input type="text" value="<%=editThis.location%>" name="list[location]" type="text" class="form-control">
+           </div>
+        <button class="add-btn">edit</button>
+
+       
+           <br><br>
+    </form>
+    
+</div>
+</div>
