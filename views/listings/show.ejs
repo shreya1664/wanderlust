@@ -1,0 +1,173 @@
+<% layout("/layouts/boilerplate.ejs") %>
+  <div class="row mt-3 mb-3 ">
+    <div class="card col-6 offset-3 mb-3 show-card">
+      <div class=" mb-3 ">
+      <b>
+        <%= place.title %>
+      </b>
+
+      <div class="save-link">
+      <a href="/wishlist/<%= place._id %>">
+       <i class="fa-regular fa-heart"></i> save 
+      </a>
+    </div>
+    </div>
+
+   <div class="row g-2 mb-3" style="height: 420px; overflow: hidden; border-radius: 12px;">
+
+  <!-- LEFT BIG IMAGE -->
+  <div class="col-6 h-100">
+    <img 
+      src="<%= place.images[0].url %>"
+      class="w-100 h-100"
+      style="object-fit: cover; border-radius: 12px;"
+      alt="main image"
+    >
+  </div>
+
+  <!-- RIGHT 4 SMALL IMAGES -->
+  <div class="col-6 h-100">
+    <div class="row g-2 h-100">
+
+      <% place.images.slice(1,5).forEach(img => { %>
+        <div class="col-6" style="height: 50%;">
+          <img 
+            src="<%= img.url %>"
+            class="w-100 h-100"
+            style="object-fit: cover; border-radius: 12px;"
+            alt="listing image"
+          >
+        </div>
+      <% }) %>
+
+    </div>
+  </div>
+
+</div>
+
+
+      <div class="card-body mb-3">
+        <p><i>owned by <%= place.owner.username %></i></p>
+        <p class="card-text "></p>
+        <p>
+          <%= place.description %>
+        </p>
+        <p>
+          <%= place.country %>
+        </p>
+        <p>
+          <%= place.location %>
+        </p>
+       <p>
+  ₹ <%= place.price ? place.price.toLocaleString("en-IN") : "N/A" %>
+</p>
+
+      </div>
+    </div>
+
+    <% if (currUser && place.owner.equals(currUser._id)) {%>
+      <div class="show-btn col-6 offset-3">
+        <a href="/listings/<%= place._id %>/edit" class="btn btn-dark col-1 offset-4 mb-3">edit</a>
+        <form method="post" action="/listings/<%=place._id %>/?_method=DELETE">
+          <button class="btn btn-dark  offset-7 mb-3">delete
+          </button>
+
+        </form>
+
+      </div>
+      <% } %>
+
+        <hr>
+        <div class="col-8 offset-4">
+          <% if (currUser) { %>
+            <h4>Leave a Review</h4>
+
+            <form action="/listings/<%= place._id %>/reviews" method="POST" class="needs-validation" novalidate>
+              <!-- Rating -->
+              <div class="mb-3 mt-3">
+                <label for="rating" class="form-label">Rating</label>
+                <fieldset class="starability-slot">
+                  <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+                    aria-label="No rating." />
+                  <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                  <label for="first-rate1" title="Terrible">1 star</label>
+                  <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                  <label for="first-rate2" title="Not good">2 stars</label>
+                  <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                  <label for="first-rate3" title="Average">3 stars</label>
+                  <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                  <label for="first-rate4" title="Very good">4 stars</label>
+                  <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                  <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+              </div>
+              <!-- Comment -->
+              <div class="mb-3">
+                <label for="comment" class="form-label">Comment</label>
+                <textarea name="review[comment]" class="form-control" id="comment" cols="30" rows="5"
+                  required></textarea>
+                <div class="invalid-feedback">Please add some comments</div>
+              </div>
+
+              <button class="btn btn-outline-dark">Submit</button>
+            </form>
+            <% } %>
+        </div>
+
+
+
+        <br>
+        <p>
+        </p>
+        <!-- <div class="row ms-4"> -->
+           <b class="mb-2">All Reviews</b>
+        <% if(place.reviews.length>0){ %>
+          <div class="col-8 reviewCard">
+            <!-- <b class="mb-2">All Reviews</b> -->
+            <br>
+            <br>
+            <% for(review of place.reviews){ %>
+              <div class="card col-5 mb-3 ms-3 mt-3 ">
+                <div class="card-body mb-3 ms-3 mt-3">
+                  <h5 class="card-title">
+                    <%= review.author.username %>
+                  </h5>
+                  <p class="starability-result card-text" data-rating="<%= review.rating  %>"> </p>
+                  <p class="card-text">
+                    <%= review.comment %>
+                  </p>
+                  <form action="/listings/<%=place._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                    <% if(currUser && review.author && review.author._id.toString()===currUser._id.toString()){ %>
+                      <button class="btn btn-sm btn-dark mb-3">delete</button>
+                      <!-- </div>
+              </div> -->
+                      <% } %>
+                  </form>
+                </div>
+              </div>
+
+              <% } %>
+          </div>
+          <% } %>
+
+            <!-- </div> -->
+            <div class="col-8 offset-4 mb-3">
+              <h3>where you'll be</h3>
+
+
+              <div id="map"></div>
+            </div>
+  </div>
+
+  </div>
+  
+  <script>
+  const mapToken = "<%= MAPBOX_TOKEN %>";
+  const coordinates = <%- JSON.stringify(place.geometry.coordinates) %>;
+  const title = "<%= place.title %>";
+
+  console.log("EJS TOKEN:", mapToken);
+  console.log("COORDS:", coordinates);
+</script>
+
+<script src="/javascript/map.js"></script>

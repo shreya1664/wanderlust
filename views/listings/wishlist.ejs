@@ -1,0 +1,36 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="row row-cols-lg-4  row-cols-md-2 row-cols-sm-2 g-4 mt-2">
+   <%  if(places && places.listings.length > 0){ %> 
+    <% for(list of places.listings ){%>
+        
+          <a href="/listings/<%= list._id %>" class="linkOfCard">
+        <div class="card listing-card" style="width: 20rem;">
+          <img  src="<%= (list.images && list.images.length > 0)
+    ? list.images[0].url
+    : '/images/default.jpg' %>" class="card-img-top" alt="listing-image"
+            style="height: 17rem; width: 18rem;">
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <p class="card-text">
+              <b>
+                <%= list.title %>
+              </b>
+              <br>
+              &#8377;
+              <%= list.price ? list.price.toLocaleString("en-IN") : "N/A" %> /night
+                <i class="tax-info"> &nbsp; &nbsp; gst 12% </i>
+
+            </p>
+          </div>
+        </div>
+        </a>
+        <% } %>
+        <% } %>
+     </div>
+        <div class="add-wish-btn">
+       <form action="/wishlist/<%= placeId %>" method="post">
+        <button type="submit" class="btn btn-dark ">Add to Wishlist</button>
+       </form>
+       </div>
+

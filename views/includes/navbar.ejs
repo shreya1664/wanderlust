@@ -1,0 +1,79 @@
+<style>
+  .search-btn {
+    background-color: #fe424d;
+    color: white;
+    padding: 0 0.5rem 0 0.5rem;
+
+  }
+  .search {
+    margin-right: 15rem;
+  }
+  .search-btn:hover{
+    background-color: #fe424d;
+    color: white;
+  }
+  .search i {
+    top: 50%; 
+    left: 10px; 
+    transform: translateY(-50%);
+    color: gray;
+  }
+ 
+</style>
+
+<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/listings"><i class="fa-solid fa-compass"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-3">
+        <li class="nav-item">
+          <a class="nav-link active" href="/listings">explore</a>
+        </li>
+      </ul>
+    </div>
+
+   
+    <div class="navbar-nav search ">
+      <form class="d-flex" action="/listings/search" role="search" method="POST">
+        <div class="position-relative">
+          <i class="fa fa-search position-absolute"></i>
+          <input class="form-control ps-5" type="search" name="list" placeholder="Search" aria-label="Search">
+        </div>
+
+        <button class="btn search-btn ms-3" type="submit">Search</button>
+      </form>
+    </div>
+
+    <ul class="navbar-nav ms-3">
+      <li class="nav-item">
+        <a class="nav-link" href="/listings/new">add airbnb</a>
+      </li>
+
+      <% if(currUser){ %>
+      <li>
+        <a class="nav-link" href="/wishlist/<%=currUser._id %>">wishlist</a>
+      </li>
+    <% } %>
+
+      <% if(!currUser) {%>
+        <li class="nav-item">
+          <a class="nav-link active" href="/signup"><b>sign-up</b></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login"><b>login</b></a>
+        </li>
+        <% }else{ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"><b>logout</b></a>
+            </li>
+            <% } %>
+    </ul>
+
+
+
+  </div>
+</nav>
